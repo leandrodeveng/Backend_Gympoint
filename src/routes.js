@@ -8,8 +8,7 @@ const routes = new Router();
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
-
-routes.use(authMiddlewares);
+routes.use(authMiddlewares); // Middleware de Autenticação
 routes.post('/students', StudentController.store);
 routes.put('/students', StudentController.update);
 
