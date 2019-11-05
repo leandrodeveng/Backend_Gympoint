@@ -7,6 +7,7 @@ class Plano extends Model {
         title: Sequelize.STRING,
         duration: Sequelize.INTEGER,
         price: Sequelize.FLOAT,
+        available: Sequelize.BOOLEAN,
       },
 
       {

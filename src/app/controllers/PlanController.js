@@ -20,8 +20,8 @@ class PlanoController {
   }
 
   async index(req, res) {
-    const plan = await Plan.findAll();
-
+    const plan = await Plan.findAll({ where: { available: true } });
+    // Listando planos que estão "disponíveis"
     return res.json(plan);
   }
 
@@ -42,6 +42,14 @@ class PlanoController {
 
   async delete(req, res) {
     const plan = await Plan.findOne({ where: { title: req.params.name } });
+
+    if (!plan) {
+      return res.status(400).json({ error: 'This Plan Does Not Exists' });
+    }
+
+    plan.available = false;
+
+    await plan.save();
 
     return res.json(plan);
   }
