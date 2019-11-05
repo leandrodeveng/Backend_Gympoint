@@ -6,9 +6,9 @@ class StudentController {
     const schema = Yup.object().shape({
       email: Yup.string().required(),
       name: Yup.string().required(),
-      nascimento: Yup.string().required(),
-      peso: Yup.string().required(),
-      altura: Yup.string().required(),
+      nascimento: Yup.date().required(),
+      peso: Yup.number().required(),
+      altura: Yup.number().required(),
     });
 
     if (!(await schema.isValid(req.body))) {
