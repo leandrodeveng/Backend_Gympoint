@@ -13,5 +13,8 @@ routes.use(authMiddlewares); // Middleware de Autenticação
 routes.post('/students', StudentController.store);
 routes.put('/students', StudentController.update);
 routes.post('/plans', PlanController.create);
+routes.get('/plans', PlanController.index);
+routes.put('/plans', PlanController.update);
+routes.delete('/plans/:name', PlanController.delete);
 
 export default routes;
