@@ -19,11 +19,15 @@ class EnrollmentController {
       return res.status(400).json({ error: 'Plan does not exists' });
     }
 
+    const student_id = student.id;
+    const plan_id = plan.id;
     const start_date = new Date();
     const end_date = addMonths(start_date, plan.duration);
     const price = plan.price * plan.duration;
 
     const enrollmentInfo = {
+      student_id,
+      plan_id,
       start_date,
       end_date,
       price,

@@ -14,6 +14,7 @@ class Plano extends Model {
         sequelize,
       }
     );
+    return this;
   }
 }
 

@@ -16,6 +16,7 @@ class User extends Model {
         sequelize,
       }
     );
+    return this;
     /*    this.addHook('beforeSave', async user => {
       // Adiciona hook de 'beforeSave' para que antes de um usuário ser salvo no banco dados ele execute a função a seguir.
       if (user.password) {
