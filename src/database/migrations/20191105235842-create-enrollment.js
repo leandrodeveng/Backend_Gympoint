@@ -1,22 +1,31 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('enrollment', {
-      student_id: {
+    return queryInterface.createTable('enrollments', {
+      id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+      },
+      student_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
         references: {
           model: 'students',
           key: 'id',
         },
+        OnUpdate: 'CASCADE',
+        OnDelete: 'SET NULL',
       },
       plan_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'planos',
           key: 'id',
         },
+        OnUpdate: 'CASCADE',
+        OnDelete: 'SET NULL',
       },
       start_date: {
         type: Sequelize.DATE,
@@ -41,5 +50,5 @@ module.exports = {
     });
   },
 
-  down: queryInterface => queryInterface.dropTable('enrollment'),
+  down: queryInterface => queryInterface.dropTable('enrollments'),
 };
