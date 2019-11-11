@@ -37,6 +37,10 @@ class EnrollmentController {
 
     return res.json(enrollmentInfo);
   }
+
+  async index(req, res) {
+    return res.json({ msg: 'ok' });
+  }
 }
 
 export default new EnrollmentController();

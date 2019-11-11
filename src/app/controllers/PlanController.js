@@ -7,7 +7,11 @@ class PlanoController {
     });
 
     if (plan) {
-      return res.status(400).json({ error: 'Plan Already Exists' });
+      // Verifica se o plano existe e está disponível.
+      // Caso verdade não cria.
+      return res.status(400).json({
+        error: 'Plan Already Exists. Check if is available',
+      });
     }
 
     const { title, duration, price } = await Plan.create(req.body);
@@ -20,8 +24,8 @@ class PlanoController {
   }
 
   async index(req, res) {
-    const plan = await Plan.findAll({ where: { available: true } });
-    // Listando planos que estão "disponíveis"
+    const plan = await Plan.findAll();
+    // Lista todos os planos.
     return res.json(plan);
   }
 
@@ -32,19 +36,24 @@ class PlanoController {
       return res.status(400).json({ error: 'This Plan Does Not Exists' });
     }
 
-    const { title, duration, price } = await plan.update(req.body);
+    const { title, duration, price, available } = await plan.update(req.body);
     return res.json({
       title,
       duration,
       price,
+      available,
     });
   }
 
   async delete(req, res) {
-    const plan = await Plan.findOne({ where: { title: req.params.name } });
+    const plan = await Plan.findOne({
+      where: { title: req.params.name, available: true },
+    });
 
     if (!plan) {
-      return res.status(400).json({ error: 'This Plan Does Not Exists' });
+      return res
+        .status(400)
+        .json({ error: 'This Plan Does Not Exists or is already disabled' });
     }
 
     plan.available = false;
