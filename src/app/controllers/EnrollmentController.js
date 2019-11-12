@@ -3,20 +3,37 @@ import Enrollment from '../models/Enrollment';
 import Students from '../models/Student';
 import Plano from '../models/Plano';
 
-//  Checar se usuário Existe
-//  Checar se usuário já tem matricula ativa
-
 class EnrollmentController {
   async create(req, res) {
     // Verifica Existencia do estudante
     const student = await Students.findOne({ where: { name: req.query.name } });
+
     if (!student) {
-      return res.status(400).json({ error: 'Student does not exist' });
+      return res.status(400).json({
+        error:
+          'Student does not exist. Create a student profile before create an enrollment',
+      });
     }
     // Verifica Existencia do Plano
-    const plan = await Plano.findOne({ where: { title: req.query.plan } });
+    const plan = await Plano.findOne({
+      where: { title: req.query.plan, available: true },
+    });
+
     if (!plan) {
-      return res.status(400).json({ error: 'Plan does not exists' });
+      return res.status(400).json({
+        error:
+          'Plan does not exists. Create a student profile before create an enrollment',
+      });
+    }
+
+    const enrollment = await Enrollment.findOne({
+      where: { student_id: student.id },
+    });
+
+    if (enrollment) {
+      return res
+        .status(400)
+        .json({ error: 'The Student alreadys have an enrollment' });
     }
 
     const student_id = student.id;
@@ -39,7 +56,48 @@ class EnrollmentController {
   }
 
   async index(req, res) {
-    return res.json({ msg: 'ok' });
+    const enrollments = await Enrollment.findAll();
+
+    return res.json(enrollments);
+  }
+
+  async update(req, res) {
+    const student = await Students.findOne({ where: { name: req.query.name } });
+    const enrollment = await Enrollment.findOne({
+      where: { student_id: student.id },
+    });
+
+    if (!enrollment) {
+      return res.status(400).json({
+        error: 'Does not exist enrollment for this student',
+      });
+    }
+
+    const plan = await Plano.findOne({ where: { title: req.body.title } });
+
+    if (!plan) {
+      return res.status(400).json({ mesage: 'The plan does not exists' });
+    }
+
+    const plan_id = plan.id;
+    const start_date = new Date();
+    const end_date = addMonths(start_date, plan.duration);
+    const price = plan.price * plan.duration;
+
+    const enrollmentInfo = {
+      plan_id,
+      start_date,
+      end_date,
+      price,
+    };
+
+    await enrollment.update(enrollmentInfo);
+
+    return res.json(enrollmentInfo);
+  }
+
+  async delete(req, res) {
+    return res.json({ mesage: 'Pika !' });
   }
 }
 
