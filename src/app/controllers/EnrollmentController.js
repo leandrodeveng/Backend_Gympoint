@@ -62,7 +62,7 @@ class EnrollmentController {
     });
 
     // Cria notificação de criação
-    /*
+
     const formatedDate = format(end_date, "dd 'de' MMMM', às' H:mm'h'", {
       locale: pt,
     });
@@ -71,7 +71,7 @@ class EnrollmentController {
       content: `Obrigado, ${student.name}, por assinar nosso plano ${plan.title}. O valor total de seu plano é de ${price}R$ e terminará em ${formatedDate}`,
       user: student_id,
     });
-    */
+
     return res.json(enrollmentInfo);
   }
 

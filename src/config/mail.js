@@ -4,7 +4,7 @@ export default {
   secure: false,
   auth: {
     user: '1f3b8c6defe5d9',
-    password: 'a463002575bfee',
+    pass: 'a463002575bfee',
   },
   default: {
     from: 'Gympass Team <noreply@gympass.com>',
