@@ -3,7 +3,6 @@ import { pt } from 'date-fns/locale/pt';
 import Enrollment from '../models/Enrollment';
 import Students from '../models/Student';
 import Plano from '../models/Plano';
-import Notification from '../schemas/notification';
 import Mail from '../../lib/mail';
 
 class EnrollmentController {
@@ -58,20 +57,20 @@ class EnrollmentController {
     await Mail.sendMail({
       to: `${student.name} <${student.email}>`,
       subject: 'Nova matricula efetuada',
-      text: 'Obrigado por efetuar sua matricula',
+      template: 'enrollmentMail',
+      context: {
+        aluno: student.name,
+        plano: plan.title,
+        preco: plan.price,
+        data: format(
+          enrollmentInfo.end_date,
+          "'dia' dd 'de' MMMM', às' H:mm'h'",
+          {
+            locale: pt,
+          }
+        ),
+      },
     });
-
-    // Cria notificação de criação
-
-    const formatedDate = format(end_date, "dd 'de' MMMM', às' H:mm'h'", {
-      locale: pt,
-    });
-
-    await Notification.create({
-      content: `Obrigado, ${student.name}, por assinar nosso plano ${plan.title}. O valor total de seu plano é de ${price}R$ e terminará em ${formatedDate}`,
-      user: student_id,
-    });
-
     return res.json(enrollmentInfo);
   }
 
