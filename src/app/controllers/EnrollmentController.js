@@ -116,7 +116,25 @@ class EnrollmentController {
   }
 
   async delete(req, res) {
-    return res.json({ mesage: 'Pika !' });
+    const student = await Students.findOne({
+      where: { name: req.query.aluno },
+    });
+
+    if (!student) {
+      return res.status(400).json('Student Does not Exists');
+    }
+
+    const enrollment = await Enrollment.findOne({
+      where: { student_id: student.id },
+    });
+
+    if (!enrollment) {
+      return res.status(400).json('Does not exist enrollment for this student');
+    }
+
+    await enrollment.destroy();
+
+    return res.json(enrollment);
   }
 }
 
