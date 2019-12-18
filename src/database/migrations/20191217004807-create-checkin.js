@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('checkin', {
+    return queryInterface.createTable('checkins', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -9,13 +9,7 @@ module.exports = {
       },
       student_id: {
         type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'students',
-          key: 'id',
-        },
-        OnUpdate: 'CASCADE',
-        OnDelete: 'SET NULL',
+        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -28,5 +22,5 @@ module.exports = {
     });
   },
 
-  down: queryInterface => queryInterface.dropTable('checkin'),
+  down: queryInterface => queryInterface.dropTable('checkins'),
 };

@@ -5,12 +5,16 @@ import authMiddlewares from './app/middlewares/auth';
 import StudentController from './app/controllers/StudentController';
 import PlanController from './app/controllers/PlanController';
 import EnrollmentController from './app/controllers/EnrollmentController';
+import CheckInController from './app/controllers/CheckInController';
 
 const routes = new Router();
 
+routes.post('/checkins', CheckInController.create);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+
 routes.use(authMiddlewares); // Middleware de Autenticação
+
 routes.post('/students', StudentController.store);
 routes.put('/students', StudentController.update);
 routes.post('/plans', PlanController.create);
